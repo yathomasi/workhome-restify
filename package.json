@@ -1,0 +1,29 @@
+{
+  "name": "workhome-restify",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "debug": "nodemon --inspect app.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mysql2": "^2.1.0",
+    "restify": "^8.5.1",
+    "restify-cors-middleware": "^1.1.1",
+    "restify-errors": "^8.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-node": "^11.0.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
+  },
+  "engines": {
+    "node": "~10.15.3",
+    "yarn": "~1.21.1"
+  }
+}
