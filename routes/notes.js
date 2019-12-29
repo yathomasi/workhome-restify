@@ -3,7 +3,7 @@ const errors = require("restify-errors");
 module.exports = (server, con) => {
   server.get("/notes", (req, res, next) => {
     con.query("select * from notes", (err, results, fields) => {
-      if (err) console.error(err);
+      if (err) return next(new errors.InvalidContentError(err));
       res.json(results);
     });
     next();
@@ -13,7 +13,13 @@ module.exports = (server, con) => {
       "select * from notes where id=?",
       [req.params.id],
       (err, results, fields) => {
-        if (err) return next(new errors.InvalidContentError(err));
+        if (err || results == "") {
+          return next(
+            new errors.ResourceNotFoundError(
+              `There is no notes with the id of ${req.params.id}`
+            )
+          );
+        }
         res.json(results);
       }
     );
@@ -25,9 +31,9 @@ module.exports = (server, con) => {
       return next(new errors.InvalidContentError("Expects 'application/json'"));
     }
     let data = req.body;
-    con.query("insert into notes set ?", data, (err, results, fields) => {
-      if (err) console.error(err);
-      res.json(results);
+    con.query("insert into notes set ?", data, (err, fields) => {
+      if (err) return next(new errors.InternalError(err.message));
+      res.json({ msg: "Note was created" });
     });
     next();
   });
@@ -40,8 +46,15 @@ module.exports = (server, con) => {
       "update `notes` set `Title`=?,`Content`=? where `Id`=?",
       [req.body.Title, req.body.Content, req.params.id],
       (err, results, fields) => {
-        if (err) console.error(err);
-        res.json(results);
+        // let affected = results.changedRows;
+        if (err) {
+          return next(
+            new errors.ResourceNotFoundError(
+              `There is no notes with the id of ${req.params.id}`
+            )
+          );
+        }
+        res.json({ msg: "notes was updated" });
       }
     );
     next();
@@ -50,9 +63,17 @@ module.exports = (server, con) => {
     con.query(
       "delete from `notes` where `Id`=?",
       [req.params.id],
-      (err, fields) => {
-        if (err) console.error(err);
-        res.end("Note is deleted");
+      (err, results, fields) => {
+        let affected = results.affectedRows;
+        if (err || affected==0) {
+          return next(
+            new errors.ResourceNotFoundError(
+              `There is no customer with the id of ${req.params.id}`
+            )
+          );
+        }
+        // res.json(results)
+        res.json({ msg: "Note was deleted" });
       }
     );
     next();
