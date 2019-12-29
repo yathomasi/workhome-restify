@@ -9,11 +9,14 @@
   },
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "restify": "^8.5.1",
     "restify-cors-middleware": "^1.1.1",
-    "restify-errors": "^8.0.2"
+    "restify-errors": "^8.0.2",
+    "restify-jwt-community": "^1.1.2"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
