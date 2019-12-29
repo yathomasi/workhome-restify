@@ -1,4 +1,7 @@
 const errors = require("restify-errors");
+const rjwt = require('restify-jwt-community');
+
+const config = require("../config/config");
 
 module.exports = (server, con) => {
   server.get("/notes", (req, res, next) => {
@@ -25,7 +28,7 @@ module.exports = (server, con) => {
     );
     next();
   });
-  server.post("/notes", (req, res, next) => {
+  server.post("/notes",rjwt({secret:config.JWT_SECRET}), (req, res, next) => {
     // Check for JSON
     if (!req.is("application/json")) {
       return next(new errors.InvalidContentError("Expects 'application/json'"));
@@ -37,7 +40,7 @@ module.exports = (server, con) => {
     });
     next();
   });
-  server.put("/notes/:id", (req, res, next) => {
+  server.put("/notes/:id",rjwt({secret:config.JWT_SECRET}), (req, res, next) => {
     // Check for JSON
     if (!req.is("application/json")) {
       return next(new errors.InvalidContentError("Expects 'application/json'"));
@@ -59,7 +62,7 @@ module.exports = (server, con) => {
     );
     next();
   });
-  server.del("/notes/:id", (req, res, next) => {
+  server.del("/notes/:id",rjwt({secret:config.JWT_SECRET}), (req, res, next) => {
     con.query(
       "delete from `notes` where `Id`=?",
       [req.params.id],

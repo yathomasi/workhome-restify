@@ -3,6 +3,7 @@ const restify = require("restify");
 const corsMiddleware = require("restify-cors-middleware");
 const logger = require("morgan");
 const config = require("./config/config");
+// const rjwt = require('restify-jwt-community');
 
 const server = restify.createServer({
   name: config.NAME,
@@ -30,6 +31,10 @@ server.use(cors.actual);
 // Routers
 require("./routes/index")(server);
 require("./routes/notes")(server, con);
+require("./routes/users")(server, con);
+
+//Protected routes
+// server.use(rjwt({secret: config.JWT_SECRET}).unless({path:['/login']}))
 
 server.listen(config.PORT, () => {
   con.connect(err => {
