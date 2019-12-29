@@ -1,5 +1,5 @@
 const restify = require("restify");
-const mysql = require("mysql2");
+// const mysql = require("mysql2");
 const corsMiddleware = require("restify-cors-middleware");
 const logger = require("morgan");
 const config = require("./config/config");
@@ -29,6 +29,7 @@ server.use(cors.actual);
 
 // Routers
 require("./routes/index")(server);
+require("./routes/notes")(server, con);
 
 server.listen(config.PORT, () => {
   con.connect(err => {
