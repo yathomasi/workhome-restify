@@ -29,7 +29,16 @@ Install the dependencies and devDependencies.
 cd workhome-restify
 yarn install
 ```
-Also create database and tables with sql files in the repo as reference in mysql database server.
+### Database
+Create database and tables with `opennotes.sql` file in the repo.
+I have used mysql workbench for this script generation of the model.
+
+![Opennotes Model](https://i.imgur.com/rWsMOnL.png)
+
+Also populate the database using the `dummy_data/opennotes_notes.sql` and `dummy_data/opennotes_users.sql`.
+
+_Here all the users has password **!restify!** in the dummy users data._
+
 ### Manage Environment File
 
 You can create a new `.env` file in root directory and copy`.env.example`content.
