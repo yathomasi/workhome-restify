@@ -1,5 +1,5 @@
 # workhome-restify (backend api)
-Note taking app using nodejs, restify with authenticaion.
+Note taking app using nodejs, restify & mysql with authentication and authorizaion using jsonwebtoken.
 
 
 ## Stack
