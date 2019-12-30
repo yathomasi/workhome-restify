@@ -1,6 +1,7 @@
 const errors = require("restify-errors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const rjwt = require("restify-jwt-community");
 const config = require("../config/config");
 const auth = require("../auth/auth");
 
@@ -8,13 +9,17 @@ const SECRET = config.JWT_SECRET;
 const SALT = Number(config.SALT);
 
 module.exports = (server, con) => {
-  server.get("/users", (req, res, next) => {
-    con.query("select * from users", (err, results, fields) => {
-      if (err) return next(new errors.InvalidContentError(err));
-      res.json(results);
-    });
-    next();
-  });
+  server.get(
+    "/users",
+    rjwt({ secret: config.JWT_SECRET }),
+    (req, res, next) => {
+      con.query("select user_id,name,username,email from users", (err, results, fields) => {
+        if (err) return next(new errors.InvalidContentError(err));
+        res.json(results);
+      });
+      next();
+    }
+  );
   // Register
   server.post("/register", (req, res, next) => {
     // Check for JSON
@@ -71,8 +76,8 @@ module.exports = (server, con) => {
       // Authenticate User
       const user = await auth.auhenticate(email, password);
       let payload = {
-          user
-      }
+        user
+      };
       // console.log(user);
       const token = jwt.sign(payload, SECRET, {
         expiresIn: "1d"
