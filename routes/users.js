@@ -22,8 +22,7 @@ module.exports = (server, con) => {
       return next(new errors.InvalidContentError("Expects 'application/json'"));
     }
     let user = {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
+      name: req.body.name,
       email: req.body.email,
       username: req.body.username,
       password: req.body.password
@@ -68,22 +67,6 @@ module.exports = (server, con) => {
       return next(new errors.InvalidContentError("Expects 'application/json'"));
     }
     const { email, password } = req.body;
-
-    // auth
-    //   .auhenticate(email, password)
-    //   .then(
-    //     user => {
-    //       //   console.log(user);
-    //       res.json(user);
-    //       next();
-    //     },
-    //     err => {
-    //       return next(new errors.InternalError(err.message));
-    //     }
-    //   )
-    //   .catch(err => {
-    //     return next(new errors.UnauthorizedError(err.message));
-    //   });
     try {
       // Authenticate User
       const user = await auth.auhenticate(email, password);
