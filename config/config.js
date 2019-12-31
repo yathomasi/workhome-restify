@@ -8,7 +8,6 @@ module.exports = {
   ENV: process.env.NODE_ENV || "development",
   PORT: process.env.PORT || 3000,
   URL: process.env.BASE_URL || "http://localhost:3000",
-  JWT_SECRET: process.env.JWT_SECRET || "secretlysecreteverjwttokengenerate",
   DB: {
     get: mysql.createConnection({
       host: process.env.DB_HOST,
@@ -18,5 +17,8 @@ module.exports = {
       multipleStatements: true
     })
   },
-  SALT: process.env.SALT || 14
+  SALT: process.env.SALT || 14,
+  JWT_SECRET: process.env.JWT_SECRET || "secretlysecreteverjwttokengenerate",
+  JWT_ISSUER:process.env.JWT_ISSUER || "https://fbk.com.np",
+  JWT_EXP:process.env.JWT_EXP || "1d"
 };

@@ -76,11 +76,14 @@ module.exports = (server, con) => {
       // Authenticate User
       const user = await auth.auhenticate(email, password);
       let payload = {
-        user
+        user_id:user.user_id,
+        username:user.username
       };
       // console.log(user);
       const token = jwt.sign(payload, SECRET, {
-        expiresIn: "1d"
+        issuer:config.JWT_ISSUER,
+        expiresIn: config.JWT_EXP,
+
       });
       const { iat, exp } = jwt.decode(token);
       res.send({ iat, exp, token });

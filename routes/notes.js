@@ -8,7 +8,10 @@ function jwt_verify(token, next) {
   let userid = jwt.verify(
     token,
     config.JWT_SECRET,
-    { expiresIn: "1d" },
+    {
+      issuer: config.JWT_ISSUER,
+      expiresIn: config.JWT_EXP
+    },
     (err, decoded) => {
       if (err) {
         return next(new errors.UnauthorizedError(err));
